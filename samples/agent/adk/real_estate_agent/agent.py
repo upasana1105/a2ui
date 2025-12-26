@@ -38,8 +38,9 @@ AGENT_INSTRUCTION = """
        - **AVOID AGENCIES**: Do NOT show real estate agencies, brokers, or property management companies. Only show residential properties or buildings.
        - Cap your final UI to exactly **6** property results.
     2. **UI Construction**:
-       - Extract **Price** (if available) and **Clean Address**.
-       - Use the `re-results` surfaceId and the simplified Column/Card layout.
+       - **DATA EXTRACTION**: For each property, extract: **Price**, **Beds**, **Baths**, **Sqft**, **Address**, and **Features** (Smart-home, yard, etc.).
+       - **NO EMPTY LABELS**: If a piece of info is missing, OMIT the key from the `dataModelUpdate` content. **NEVER** use the string "(empty)".
+       - Use the `re-results` surfaceId and the Redfin-style Column/Card template.
        - **IMAGE PRIORITIZATION**: Prioritize using `search_properties` because it provides actual Google Photos (`imageUrl`). Use `google_search` only as a fallback or for specific details.
        - Use `imageUrl` from tool results. If missing (e.g. from `google_search`), you MUST construct one using: `[BASE_URL]/proxy-image?id=house_[CLEAN_ADDRESS]`. 
        - Always include the 'house_' prefix in the placeholder ID to ensure the system serves home-centric images.

@@ -89,7 +89,7 @@ export class Text extends Root {
     }
 
     if (textValue === null || textValue === undefined) {
-      return html`(empty)`;
+      return nothing;
     }
 
     let markdownText = textValue;

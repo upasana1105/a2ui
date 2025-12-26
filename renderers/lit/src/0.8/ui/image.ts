@@ -86,17 +86,17 @@ export class Image extends Root {
           this.surfaceId ?? A2uiMessageProcessor.DEFAULT_SURFACE_ID
         );
         if (!imageUrl) {
-          return html`Invalid image URL`;
+          return nothing;
         }
 
         if (typeof imageUrl !== "string") {
-          return html`Invalid image URL`;
+          return nothing;
         }
         return render(imageUrl);
       }
     }
 
-    return html`(empty)`;
+    return nothing;
   }
 
   render() {
