@@ -45,11 +45,13 @@ import "./ui/ui.js";
 import { AppConfig } from "./configs/types.js";
 import { config as restaurantConfig } from "./configs/restaurant.js";
 import { config as contactsConfig } from "./configs/contacts.js";
+import { config as realEstateConfig } from "./configs/real_estate.js";
 import { styleMap } from "lit/directives/style-map.js";
 
 const configs: Record<string, AppConfig> = {
   restaurant: restaurantConfig,
   contacts: contactsConfig,
+  real_estate: realEstateConfig,
 };
 
 @customElement("a2ui-shell")
@@ -366,7 +368,7 @@ export class A2UILayoutEditor extends SignalWatcher(LitElement) {
       <div>
         <input
           required
-          value="${this.config.placeholder}"
+          placeholder="${this.config.placeholder}"
           autocomplete="off"
           id="body"
           name="body"
@@ -485,6 +487,14 @@ export class A2UILayoutEditor extends SignalWatcher(LitElement) {
               }
             }
 
+            if (evt.detail.action.name === "OPEN_URL") {
+              const url = (context["url"] as string) || (context["realtorUrl"] as string);
+              if (url) {
+                window.open(url, "_blank");
+                return;
+              }
+            }
+
             const message: v0_8.Types.A2UIClientEventMessage = {
               userAction: {
                 name: evt.detail.action.name,
@@ -509,7 +519,11 @@ export class A2UILayoutEditor extends SignalWatcher(LitElement) {
   async #sendAndProcessMessage(request) {
     const messages = await this.#sendMessage(request);
 
-    console.log(messages);
+    console.log("A2UI messages received:", messages);
+
+    if (messages.length === 0) {
+      this.snackbar("The agent returned a response but no UI content could be rendered. Check the console for details.", SnackType.WARNING);
+    }
 
     this.#lastMessages = messages;
     this.#processor.clearSurfaces();

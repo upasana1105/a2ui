@@ -102,6 +102,29 @@ export class A2UIClient {
       for (const part of result.status.message.parts) {
         if (part.kind === 'data') {
           messages.push(part.data as v0_8.Types.ServerToClientMessage);
+        } else if (part.kind === 'text' && part.text) {
+          // Wrap text as a pseudo-message with a Text component
+          messages.push({
+            surfaceUpdate: {
+              surfaceId: "agent-text-response",
+              components: [{
+                id: "text-part",
+                component: {
+                  Text: {
+                    text: part.text,
+                  }
+                }
+              }]
+            }
+          } as v0_8.Types.ServerToClientMessage);
+
+          // Also need a beginRendering if this is the first time
+          messages.unshift({
+            beginRendering: {
+              surfaceId: "agent-text-response",
+              root: "text-part"
+            }
+          } as v0_8.Types.ServerToClientMessage);
         }
       }
       return messages;
