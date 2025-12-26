@@ -84,7 +84,7 @@ export class A2UILayoutEditor extends SignalWatcher(LitElement) {
 
       :host {
         display: block;
-        max-width: 640px;
+        max-width: 2000px;
         margin: 0 auto;
         min-height: 100%;
         color: light-dark(var(--n-10), var(--n-90));
@@ -292,7 +292,18 @@ export class A2UILayoutEditor extends SignalWatcher(LitElement) {
 
     // Apply the theme directly, which will use the Lit context.
     if (this.config.theme) {
-      this.theme = this.config.theme;
+      this.theme = {
+        ...uiTheme,
+        ...this.config.theme,
+        additionalStyles: {
+          ...uiTheme.additionalStyles,
+          ...this.config.theme.additionalStyles,
+        },
+        components: {
+          ...uiTheme.components,
+          ...this.config.theme.components,
+        },
+      } as any;
     }
 
     window.document.title = this.config.title;

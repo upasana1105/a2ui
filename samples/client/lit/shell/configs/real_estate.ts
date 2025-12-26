@@ -28,4 +28,20 @@ export const config: AppConfig = {
     "Hang tight...",
   ],
   serverUrl: "http://localhost:10003",
+  theme: {
+    additionalStyles: {
+      List: {
+        "grid-template-columns": "repeat(auto-fill, minmax(400px, 1fr))",
+        "gap": "24px",
+        "padding": "24px",
+        "align-items": "start",
+      },
+      Image: {
+        "height": "240px",
+        "width": "100%",
+        "object-fit": "cover",
+        "border-radius": "12px",
+      }
+    }
+  } as any,
 };
